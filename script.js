@@ -10,9 +10,11 @@ const cell9 = document.getElementById("cell9");
 
 const cellBoard = document.querySelector(".gameboard");
 
+const startBtn = document.querySelector(".start");
+const resetBtn = document.querySelector(".reset");
+
 function GameController(player1 = 1, player2 = 2) {
   let board = Gameboard();
-
 
   let cellArray = [
     cell1,
@@ -87,25 +89,33 @@ function GameController(player1 = 1, player2 = 2) {
         boardArray[1][1] !== 0)
     ) {
       console.log(`Game over ${activePlayer} wins`);
-      resetGame();
+      setTimeout(() => {
+        resetGame();
+      }, 1000);
     } else if (boardArray.flat().includes(0) !== true) {
       console.log("Tie!");
-      resetGame();
-      newRound();
+      setTimeout(() => {
+        resetGame();
+      }, 1000);
     }
   }
 
   function resetGame() {
     for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-            board.changeCellValue(0, i, j)
-        }
+      for (let j = 0; j < 3; j++) {
+        board.changeCellValue(0, i, j);
+      }
     }
-    activePlayer = player1;
+    switchPlayer();
+
     renderBoard();
+
+    console.log(board.getCellValues());
   }
 
   function renderBoard() {
+    boardArray = board.getCellValues();
+
     let boardStateArray = boardArray.reduce((arr, row) => {
       arr = arr.concat(row);
       return arr;
@@ -140,7 +150,6 @@ function GameController(player1 = 1, player2 = 2) {
   return {
     resetGame,
     playRound,
-    renderBoard,
   };
 }
 
@@ -199,44 +208,48 @@ function Cell() {
 game = GameController();
 
 cellBoard.addEventListener("click", (event) => {
-    let target = event.target;
+  let target = event.target;
 
-    if (target.id === '')   {
-        target = event.target.parentNode
-    }
-    
-    console.log(target.id)
+  if (target.id === "") {
+    target = event.target.parentNode;
+  }
 
-    switch (target.id) {
-      case "cell1":
-        game.playRound(0, 0);
-        break;
-      case "cell2":
-        game.playRound(0, 1);
-        break;
-      case "cell3":
-        game.playRound(0, 2);
-        break;
-      case "cell4":
-        game.playRound(1, 0);
-        break;
-      case "cell5":
-        game.playRound(1, 1);
-        break;
-      case "cell6":
-        game.playRound(1, 2);
-        break;
-      case "cell7":
-        game.playRound(2, 0);
-        break;
-      case "cell8":
-        game.playRound(2, 1);
-        break;
-      case "cell9":
-        game.playRound(2, 2);
-        break;
+  console.log(target.id);
 
-      default:
-        break;
-    }
-  });
+  switch (target.id) {
+    case "cell1":
+      game.playRound(0, 0);
+      break;
+    case "cell2":
+      game.playRound(0, 1);
+      break;
+    case "cell3":
+      game.playRound(0, 2);
+      break;
+    case "cell4":
+      game.playRound(1, 0);
+      break;
+    case "cell5":
+      game.playRound(1, 1);
+      break;
+    case "cell6":
+      game.playRound(1, 2);
+      break;
+    case "cell7":
+      game.playRound(2, 0);
+      break;
+    case "cell8":
+      game.playRound(2, 1);
+      break;
+    case "cell9":
+      game.playRound(2, 2);
+      break;
+
+    default:
+      break;
+  }
+});
+
+resetBtn.addEventListener("click", () => {
+  game.resetGame();
+});
