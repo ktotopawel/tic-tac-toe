@@ -113,6 +113,7 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     justify-content: center;
     border: 3px solid var(--dark-theme);
+    cursor: pointer;
 
     font-size: 42px;
     color: var(--dark-theme);

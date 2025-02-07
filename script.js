@@ -26,8 +26,6 @@ function GameController(player1 = 1, player2 = 2) {
     cell9,
   ];
 
-  console.log(board.getCellValues());
-
   let activePlayer = player1;
 
   let boardArray = board.getCellValues();
@@ -43,7 +41,6 @@ function GameController(player1 = 1, player2 = 2) {
     renderBoard();
 
     newRound();
-    console.log(board.getCellValues());
   }
 
   function switchPlayer() {
@@ -57,14 +54,11 @@ function GameController(player1 = 1, player2 = 2) {
   function newRound() {
     switchPlayer();
     console.log(`${activePlayer}'s turn.`);
-    board.getCellValues;
+    renderBoard();
   }
 
   function checkForWin() {
     boardArray = board.getCellValues();
-
-    console.log(`checkForWinFn`);
-    console.log(boardArray);
 
     if (
       (boardArray[0][0] === boardArray[0][1] &&
@@ -94,14 +88,19 @@ function GameController(player1 = 1, player2 = 2) {
     ) {
       console.log(`Game over ${activePlayer} wins`);
       resetGame();
-    } else if (!boardArray.some((val) => val !== 0)) {
+    } else if (boardArray.flat().includes(0) !== true) {
       console.log("Tie!");
       resetGame();
+      newRound();
     }
   }
 
   function resetGame() {
-    board = Gameboard();
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            board.changeCellValue(0, i, j)
+        }
+    }
     activePlayer = player1;
     renderBoard();
   }
@@ -111,8 +110,6 @@ function GameController(player1 = 1, player2 = 2) {
       arr = arr.concat(row);
       return arr;
     }, []);
-
-    console.log(boardStateArray);
 
     for (let i = 0; i < cellArray.length; i++) {
       if (cellArray[i].firstChild) {
@@ -168,7 +165,6 @@ function Gameboard() {
     const boardWithCellValues = board.map((row) =>
       row.map((cell) => cell.getValue())
     );
-    // console.log(boardWithCellValues);
     return boardWithCellValues;
   }
 
@@ -200,21 +196,17 @@ function Cell() {
   };
 }
 
-// function Player(playerName, playerSymbol) {playerName, playerSymbol};
-
 game = GameController();
-
-game.playRound(0, 0);
-game.playRound(1, 2);
-game.playRound(0, 1);
-game.playRound(1, 1)
-
-console.log(cellBoard);
-
-
 
 cellBoard.addEventListener("click", (event) => {
     let target = event.target;
+
+    if (target.id === '')   {
+        target = event.target.parentNode
+    }
+    
+    console.log(target.id)
+
     switch (target.id) {
       case "cell1":
         game.playRound(0, 0);
