@@ -41,13 +41,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 :root {
+    font-family: system-ui, sans-serif;
+    font-weight: normal;;
+
     --dark-theme: #787abc;
     --light-theme: #edecfa;
     --dark-background: #dfc395;
     --light-background: #f4e1c4;
     --lighter-background: #fff4e4;
     --highlight: #f4d162;
+
+    --light-bg-filter: brightness(0) saturate(100%) invert(87%) sepia(6%) saturate(960%) hue-rotate(329deg) brightness(108%) contrast(108%);
+    --dark-theme-filter: brightness(0) saturate(100%) invert(50%) sepia(18%) saturate(993%) hue-rotate(200deg) brightness(95%) contrast(90%);
     
+    --default-padding: 1.5rem
 }
 
 .container {
@@ -64,6 +71,15 @@ h1, h2, h3, h4, h5, h6 {
 
     & .logo {
         display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: var(--default-padding);
+        font-size: 1.5rem;
+
+        & img {
+            height: 3rem;
+            filter: var(--light-bg-filter);
+        }
     } 
 }
 
@@ -99,6 +115,11 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 42px;
     color: var(--dark-theme);
 
+    & .icon {
+        height: 90%;
+        filter: var(--dark-theme-filter);
+    }
+
     &:nth-child(1),
     &:nth-child(2),
     &:nth-child(3) {
@@ -124,7 +145,96 @@ h1, h2, h3, h4, h5, h6 {
     };
 }
 
+.side-panel {
+    background: var(--light-background);
+    padding: var(--default-padding);
+    border-radius: 25px;
+    margin: 0.5rem;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.score {
+    border-bottom: 2px solid var(--dark-background);
+    text-align: center;
+    font-size: 2rem;
+}
+
+.scores {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    & div {
+        padding: var(--default-padding);
+        font-size: 2.5rem;
+    }
+}
+
+.p1, .p2 {
+    display: flex;
+    flex-direction: column;
+
+    & span {
+        font-size: 1.2rem;
+    }
+}
+
+.players-input {
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+input[type='text'] {
+    background: var(--lighter-background);
+    border: none;
+    outline: none;
+    font-size: 1.2rem;
+    border-radius: 1rem;
+    padding: 0.25rem 1rem;
+}
+
+.submit-btn {
+    background: var(--dark-background);
+    width: 90%;
+    text-align: center;
+    padding: 0.5rem var(--default-padding);
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+.buttons {
+    margin-top: auto;
+    display: grid;
+    text-align: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+
+    & div {
+        padding: var(--default-padding);
+        border-radius: 1.5rem;
+        text-transform: uppercase;
+        cursor: pointer;
+    }
+
+    & .start {
+        background: var(--highlight);
+    }
+
+    & .reset {
+        background: var(--dark-theme);
+    }
+}
+
 .footer {
     background: var(--light-theme);
     flex: none;
+    text-align: center;
+    padding: 1rem;
 }
