@@ -1,141 +1,143 @@
-function GameController() {
-  let board = Gameboard();
+class GameController {
+  constructor() {
+    this.board = new Gameboard();
 
-  let player1 = {
-    i: 1,
-    playerDisplay: document.querySelector(".p1"),
-  };
+    this.player1 = {
+      i: 1,
+      playerDisplay: document.querySelector(".p1"),
+    };
 
-  let player2 = {
-    i: 2,
-    playerDisplay: document.querySelector(".p2"),
-  };
+    this.player2 = {
+      i: 2,
+      playerDisplay: document.querySelector(".p2"),
+    };
 
-  const result = document.querySelector(".result");
+    this.result = document.querySelector(".result");
 
-  const p1Counter = document.querySelector(".p1-score");
-  const p2Counter = document.querySelector(".p2-score");
+    this.p1Counter = document.querySelector(".p1-score");
+    this.p2Counter = document.querySelector(".p2-score");
 
-  const cellArray = DomHandler().gameboardHandler().cellArray;
+    this.cellArray = DomHandler().gameboardHandler().cellArray;
 
-  player1.score = 0;
+    this.player1.score = 0;
 
-  player2.score = 0;
+    this.player2.score = 0;
 
-  let activePlayer = player1;
+    this.activePlayer = this.player1;
 
-  let boardArray = board.getCellValues();
+    this.boardArray = this.board.getCellValues();
+  }
 
-  function playRound(col, row) {
-    if (board.getCellValues()[col][row] === 0) {
-      board.changeCellValue(activePlayer.i, col, row);
+  playRound(col, row) {
+    if (this.board.getCellValues()[col][row] === 0) {
+      this.board.changeCellValue(this.activePlayer.i, col, row);
     } else {
       console.log("spot taken");
       return;
     }
-    checkForWin();
-    renderBoard();
+    this.checkForWin();
+    this.renderBoard();
 
-    newRound();
+    this.newRound();
   }
 
-  function switchPlayer() {
-    console.log(activePlayer.playerDisplay.querySelector(".player"));
+  switchPlayer() {
+    console.log(this.activePlayer.playerDisplay.querySelector(".player"));
 
-    activePlayer.playerDisplay
+    this.activePlayer.playerDisplay
       .querySelector(".player")
       .classList.remove("current");
 
-    if (activePlayer === player1) {
-      activePlayer = player2;
+    if (this.activePlayer === this.player1) {
+      this.activePlayer = this.player2;
     } else {
-      activePlayer = player1;
+      this.activePlayer = this.player1;
     }
 
-    activePlayer.playerDisplay
+    this.activePlayer.playerDisplay
       .querySelector(".player")
       .classList.add("current");
   }
 
-  function newRound() {
-    switchPlayer();
-    console.log(`${activePlayer.i}'s turn.`);
-    renderBoard();
+  newRound() {
+    this.switchPlayer();
+    console.log(`${this.activePlayer.i}'s turn.`);
+    this.renderBoard();
   }
 
-  function checkForWin() {
-    boardArray = board.getCellValues();
+  checkForWin() {
+    this.boardArray = this.board.getCellValues();
 
     if (
-      (boardArray[0][0] === boardArray[0][1] &&
-        boardArray[0][1] === boardArray[0][2] &&
-        boardArray[0][0] !== 0) ||
-      (boardArray[1][0] === boardArray[1][1] &&
-        boardArray[1][1] === boardArray[1][2] &&
-        boardArray[1][1] !== 0) ||
-      (boardArray[2][0] === boardArray[2][1] &&
-        boardArray[2][1] === boardArray[2][2] &&
-        boardArray[2][1] !== 0) ||
-      (boardArray[0][0] === boardArray[1][0] &&
-        boardArray[1][0] === boardArray[2][0] &&
-        boardArray[1][0] !== 0) ||
-      (boardArray[0][1] === boardArray[1][1] &&
-        boardArray[1][1] === boardArray[2][1] &&
-        boardArray[1][1] !== 0) ||
-      (boardArray[0][2] === boardArray[1][2] &&
-        boardArray[1][2] === boardArray[2][2] &&
-        boardArray[1][2] !== 0) ||
-      (boardArray[0][0] === boardArray[1][1] &&
-        boardArray[1][1] === boardArray[2][2] &&
-        boardArray[1][1] !== 0) ||
-      (boardArray[0][2] === boardArray[1][1] &&
-        boardArray[1][1] === boardArray[2][0] &&
-        boardArray[1][1] !== 0)
+      (this.boardArray[0][0] === this.boardArray[0][1] &&
+        this.boardArray[0][1] === this.boardArray[0][2] &&
+        this.boardArray[0][0] !== 0) ||
+      (this.boardArray[1][0] === this.boardArray[1][1] &&
+        this.boardArray[1][1] === this.boardArray[1][2] &&
+        this.boardArray[1][1] !== 0) ||
+      (this.boardArray[2][0] === this.boardArray[2][1] &&
+        this.boardArray[2][1] === this.boardArray[2][2] &&
+        this.boardArray[2][1] !== 0) ||
+      (this.boardArray[0][0] === this.boardArray[1][0] &&
+        this.boardArray[1][0] === this.boardArray[2][0] &&
+        this.boardArray[1][0] !== 0) ||
+      (this.boardArray[0][1] === this.boardArray[1][1] &&
+        this.boardArray[1][1] === this.boardArray[2][1] &&
+        this.boardArray[1][1] !== 0) ||
+      (this.boardArray[0][2] === this.boardArray[1][2] &&
+        this.boardArray[1][2] === this.boardArray[2][2] &&
+        this.boardArray[1][2] !== 0) ||
+      (this.boardArray[0][0] === this.boardArray[1][1] &&
+        this.boardArray[1][1] === this.boardArray[2][2] &&
+        this.boardArray[1][1] !== 0) ||
+      (this.boardArray[0][2] === this.boardArray[1][1] &&
+        this.boardArray[1][1] === this.boardArray[2][0] &&
+        this.boardArray[1][1] !== 0)
     ) {
-      result.textContent = `Game Over! ${activePlayer.i} wins!`;
+      this.result.textContent = `Game Over! ${this.activePlayer.i} wins!`;
 
-      activePlayer.score++;
+      this.activePlayer.score++;
 
       setTimeout(() => {
-        resetGame();
+        this.resetGame();
       }, 1500);
-    } else if (boardArray.flat().includes(0) !== true) {
-      result.textContent = `Game Over! Tie!`;
+    } else if (this.boardArray.flat().includes(0) !== true) {
+      this.result.textContent = `Game Over! Tie!`;
       setTimeout(() => {
         resetGame();
       }, 1500);
     }
   }
 
-  function resetGame() {
-    result.textContent = "";
+  resetGame() {
+    this.result.textContent = "";
 
-    p1Counter.textContent = player1.score;
-    p2Counter.textContent = player2.score;
+    this.p1Counter.textContent = this.player1.score;
+    this.p2Counter.textContent = this.player2.score;
 
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
-        board.changeCellValue(0, i, j);
+        this.board.changeCellValue(0, i, j);
       }
     }
-    switchPlayer();
+    this.switchPlayer();
 
-    renderBoard();
+    this.renderBoard();
 
-    console.log(board.getCellValues());
+    console.log(this.board.getCellValues());
   }
 
-  function renderBoard() {
-    boardArray = board.getCellValues();
+  renderBoard() {
+    this.boardArray = this.board.getCellValues();
 
-    let boardStateArray = boardArray.reduce((arr, row) => {
+    let boardStateArray = this.boardArray.reduce((arr, row) => {
       arr = arr.concat(row);
       return arr;
     }, []);
 
-    for (let i = 0; i < cellArray.length; i++) {
-      if (cellArray[i].firstChild) {
-        cellArray[i].removeChild(cellArray[i].firstChild);
+    for (let i = 0; i < this.cellArray.length; i++) {
+      if (this.cellArray[i].firstChild) {
+        this.cellArray[i].removeChild(this.cellArray[i].firstChild);
       }
     }
 
@@ -147,74 +149,63 @@ function GameController() {
           const x = document.createElement("img");
           x.src = "src/x.svg";
           x.classList.add("icon");
-          cellArray[i].appendChild(x);
+          this.cellArray[i].appendChild(x);
           break;
         case 2:
           const o = document.createElement("img");
           o.src = "src/o.svg";
           o.classList.add("icon");
-          cellArray[i].appendChild(o);
+          this.cellArray[i].appendChild(o);
           break;
       }
     }
   }
-
-  return {
-    resetGame,
-    playRound,
-  };
 }
 
-function Gameboard() {
-  const rows = 3;
-  const cols = 3;
-  const board = [];
+class Gameboard {
+  constructor() {
+    this.rows = 3;
 
-  for (let i = 0; i < rows; i++) {
-    board[i] = [];
+    this.cols = 3;
 
-    for (let j = 0; j < cols; j++) {
-      board[i].push(Cell());
+    this.board = [];
+    for (let i = 0; i < this.rows; i++) {
+      this.board[i] = [];
+
+      for (let j = 0; j < this.cols; j++) {
+        this.board[i].push(new Cell());
+      }
     }
   }
 
-  function getBoard() {
-    return board;
+  getBoard() {
+    return this.board;
   }
 
-  function getCellValues() {
-    const boardWithCellValues = board.map((row) =>
+  getCellValues() {
+    const boardWithCellValues = this.board.map((row) =>
       row.map((cell) => cell.getValue())
     );
     return boardWithCellValues;
   }
 
-  function changeCellValue(value, row, col) {
-    board[row][col].changeValue(value);
+  changeCellValue(value, row, col) {
+    this.board[row][col].changeValue(value);
   }
-
-  return {
-    getCellValues,
-    changeCellValue,
-    getBoard,
-  };
 }
 
-function Cell() {
-  let value = 0;
+class Cell {
+  constructor() {
+    this.value = 0;
+  }
 
-  const changeValue = (playerValue) => {
-    value = playerValue;
-  };
+  changeValue(playerValue) {
+    this.value = playerValue;
+  }
 
-  const getValue = () => {
-    return value;
-  };
-
-  return {
-    getValue,
-    changeValue,
-  };
+  getValue() {
+    return this.value;
+  }
 }
 
 function DomHandler() {
@@ -263,16 +254,15 @@ function DomHandler() {
     const player2NameDisplay = document.querySelector("#player-2-name");
 
     return {
-        player1NameDisplay,
-        player2NameDisplay
-    }
+      player1NameDisplay,
+      player2NameDisplay,
+    };
   }
-  
 
   return {
     gameboardHandler,
     buttonHandler,
-    playerNameDisplay
+    playerNameDisplay,
   };
 }
 
@@ -333,8 +323,10 @@ DomHandler()
     const p1Input = document.querySelector("#player1-name");
     const p2Input = document.querySelector("#player2-name");
 
-    DomHandler().playerNameDisplay().player1NameDisplay.textContent = p1Input.value;
-    DomHandler().playerNameDisplay().player2NameDisplay.textContent = p2Input.value;
+    DomHandler().playerNameDisplay().player1NameDisplay.textContent =
+      p1Input.value;
+    DomHandler().playerNameDisplay().player2NameDisplay.textContent =
+      p2Input.value;
   });
 
-game = GameController();
+game = new GameController();
